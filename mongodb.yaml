@@ -11,7 +11,7 @@
     apt_repository:
       repo: deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse
       state: present
-  - name: install mongodb
+  - name: Install mongodb
     apt:
       pkg: mongodb-org
       update_cache: yes
@@ -23,3 +23,4 @@
     service:
       name: mongod
       state: started
+      enabled: yes
