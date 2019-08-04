@@ -1,0 +1,7 @@
+---
+- hosts: developer-workstation
+  remote_user: swiftlet
+  tasks:
+    - name: Enable root login
+      shell: sudo cp ~/.ssh/authorized_keys /root/.ssh/
+      
