@@ -1,0 +1,45 @@
+---
+- hosts: developer-workstation
+  remote_user: root
+  become: yes
+  tasks:
+  - name: Install Java
+    apt:
+      pkg: default-jdk
+      update_cache: yes
+      state: latest
+  - name: Install Elasticsearch pkg required
+    apt:
+      pkg: apt-transport-https
+      update_cache: yes
+      state: latest
+  - name: Import the public key used by the package management system
+    apt_key:
+      url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      state: present
+  - name: Add Elasticsearch repository
+    apt_repository:
+      repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+      state: present
+  - name: Install elasticsearch
+    apt:
+      pkg: elasticsearch
+      update_cache: yes
+      state: latest
+    notify:
+    - copy config elasticsearch
+    - start elasticsearch
+  handlers:
+  - name: copy config elasticsearch
+    copy:
+      src: conf/elasticsearch.yml
+      dest: /etc/elasticsearch/elasticsearch.yml
+      owner: root
+      group: root
+      mode: '0644'
+      backup: yes
+  - name: start elasticsearch
+    service:
+      name: elasticsearch
+      state: started
+      enabled: yes
