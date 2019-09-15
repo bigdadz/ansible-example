@@ -1,0 +1,8 @@
+---
+- hosts: production
+  remote_user: root
+  become: yes
+  roles:
+    - role: elastic.elasticsearch
+  vars:
+    es_version: 7.1.1
